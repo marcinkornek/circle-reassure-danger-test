@@ -1,0 +1,5 @@
+{"metadata":{"creationDate":"2023-08-16T15:12:45.421Z"}}
+{"name":"Other Component 10","runs":10,"meanDuration":7.5,"stdevDuration":0.97182531580755,"durations":[9,8,8,8,8,8,7,7,6,6],"meanCount":3,"stdevCount":0,"counts":[3,3,3,3,3,3,3,3,3,3]}
+{"name":"Other Component 10 legacy scenario","runs":10,"meanDuration":6.6,"stdevDuration":0.5163977794943222,"durations":[7,7,7,7,7,7,6,6,6,6],"meanCount":3,"stdevCount":0,"counts":[3,3,3,3,3,3,3,3,3,3]}
+{"name":"Other Component 20","runs":20,"meanDuration":6.45,"stdevDuration":0.8870412083230171,"durations":[8,8,7,7,7,7,7,7,7,7,6,6,6,6,6,6,6,5,5,5],"meanCount":3,"stdevCount":0,"counts":[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]}
+{"name":"Async Component","runs":10,"meanDuration":8.5,"stdevDuration":2.9533408577782247,"durations":[15,10,10,10,9,7,7,6,6,5],"meanCount":6,"stdevCount":0,"counts":[6,6,6,6,6,6,6,6,6,6]}
