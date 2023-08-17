@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import {render, screen} from '@testing-library/react-native';
+
 import {SlowList} from './SlowList';
 
 test('SlowList', () => {

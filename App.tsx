@@ -1,9 +1,11 @@
 import React from 'react';
-import {SlowList} from './src/SlowList';
 import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
+
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-function App(): JSX.Element {
+import {SlowList} from './src/SlowList';
+
+export function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -20,5 +22,3 @@ function App(): JSX.Element {
     </SafeAreaView>
   );
 }
-
-export default App;
