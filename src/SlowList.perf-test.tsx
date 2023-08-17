@@ -1,7 +1,9 @@
 import * as React from 'react';
-import {View, Text, Pressable} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
+
 import {fireEvent, screen} from '@testing-library/react-native';
 import {measurePerformance} from 'reassure';
+
 import {SlowList} from './SlowList';
 
 const AsyncComponent = () => {
