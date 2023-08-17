@@ -14,3 +14,11 @@ jobs:
       - run:
           name: Run tests
           command: yarn test
+      - run:
+          name: Run performance testing script
+          command: ./reassure-tests.sh
+      - run:
+          name: Run Danger.js
+          command: yarn danger ci
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
