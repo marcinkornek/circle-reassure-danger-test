@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
-
+import {View, Text, FlatList} from 'react-native';
 interface Props {
   count: number;
 }
@@ -9,11 +8,11 @@ export const SlowList = ({count}: Props) => {
   const data = Array.from({length: count}, (_, index) => index);
 
   return (
-    <View>
-      {data.map(item => (
-        <SlowListItem key={item} title={`Item ${item}`} />
-      ))}
-    </View>
+    <FlatList
+      data={data}
+      renderItem={({item}) => <SlowListItem title={`Item ${item}`} />}
+      keyExtractor={item => `${item}`}
+    />
   );
 };
 
@@ -22,12 +21,6 @@ interface ItemProps {
 }
 
 const SlowListItem = ({title}: ItemProps) => {
-  const [, forceRender] = React.useState<{}>();
-
-  React.useEffect(() => {
-    forceRender({});
-  }, [title]);
-
   return (
     <View>
       <Text>{title}</Text>
