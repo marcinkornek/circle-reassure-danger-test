@@ -15,6 +15,9 @@ jobs:
           name: Run tests
           command: yarn test
       - run:
+          name: Decode sentry.properties file and save it in android and ios folders
+          command: echo "$SENTRY_PROPERTIES_BASE64" | base64 --decode > ios/sentry.properties && echo "$SENTRY_PROPERTIES_BASE64" | base64 --decode > android/sentry.properties
+      - run:
           name: Run performance testing script
           command: ./reassure-tests.sh
       - run:

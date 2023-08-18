@@ -64,5 +64,16 @@ yarn-error.log
 
 # testing
 /coverage
+
 # Reassure output directory
 .reassure
+
+# environment variables
+.env
+
+# react-native-config codegen
+ios/tmp.xcconfig
+
+# sentry config files
+android/sentry.properties
+ios/sentry.properties
