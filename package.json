@@ -13,6 +13,7 @@
     "pre-push": "echo \"Let's do the TS check\" && yarn typecheck && echo \"Let's lint the codebase\" && yarn lint && echo \"Let's test the codebase\" && yarn test && echo \"Let's test the performance\" && yarn perf-test && echo \"All good! Let's push the changes\""
   },
   "dependencies": {
+    "@sentry/react-native": "^5.9.0",
     "react": "18.2.0",
     "react-native": "0.72.4",
     "react-native-config": "^1.5.1"

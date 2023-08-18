@@ -1,8 +1,4 @@
 declare module 'react-native-config' {
-  export interface NativeConfig {
-    APP_ENVIRONMENT: string;
-  }
-
-  export const Config: NativeConfig;
-  export default Config;
+  export const APP_ENVIRONMENT: string;
+  export const SENTRY_DSN: string;
 }

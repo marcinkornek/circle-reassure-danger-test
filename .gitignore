@@ -73,3 +73,7 @@ yarn-error.log
 
 # react-native-config codegen
 ios/tmp.xcconfig
+
+# sentry config files
+android/sentry.properties
+ios/sentry.properties
