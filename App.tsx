@@ -1,7 +1,8 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
+import {Button, SafeAreaView, StatusBar, useColorScheme} from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import * as Sentry from '@sentry/react-native';
 
 import {SlowList} from './src/SlowList';
 import {setErrorTrackerSetup} from './src/utils/errorTracker';
