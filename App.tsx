@@ -1,9 +1,13 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
+import {Button, SafeAreaView, StatusBar, useColorScheme} from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import * as Sentry from '@sentry/react-native';
 
 import {SlowList} from './src/SlowList';
+import {setErrorTrackerSetup} from './src/utils/errorTracker';
+
+setErrorTrackerSetup();
 
 export function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -19,6 +23,12 @@ export function App(): JSX.Element {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <SlowList count={10} />
+      <Button
+        title="Try!"
+        onPress={() => {
+          Sentry.captureException(new Error('First error'));
+        }}
+      />
     </SafeAreaView>
   );
 }
