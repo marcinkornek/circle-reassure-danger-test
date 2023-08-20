@@ -1,9 +1,11 @@
+# Orb support is from version >= 2.1
 version: 2.1
 
 # Make sure you use the latest version of the Orb!
 orbs:
   rn: react-native-community/react-native@7.1.0
-  android: circleci/android@2.1.2
+  android: circleci/android@2.3.0
+  node: circleci/node@5.1.0
 
 # Custom jobs which are not part of the Orb
 jobs:
@@ -14,34 +16,18 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: .
-      - run:
-        name: Decode sentry.properties file
-        command: |
-          echo $SENTRY_PROPERTIES_BASE64 | base64 --decode > android/sentry.properties
-          echo $SENTRY_PROPERTIES_BASE64 | base64 --decode > ios/sentry.properties
-
   analyse_js:
     executor: rn/linux_js
     steps:
-      - restore_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - attach_workspace:
+          at: .
+      - rn/yarn_install
       - run:
-          name: Install Dependencies
-          command: yarn
+          name: Run ESLint
+          command: yarn eslint
       - run:
-          name: Run tests
-          command: yarn test
-      - run:
-          name: Run ESlLint
-          command: yarn lint
-      - run:
-          name: Run performance testing script
-          command: ./reassure-tests.sh
-      - run:
-          name: Run Danger.js
-          command: yarn danger ci
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: Jest
+          command: yarn jest
 
 workflows:
   test:
@@ -50,21 +36,21 @@ workflows:
       # Note: This is a job which is defined above and not part of the Orb
       - checkout_code
 
-      # Analyze the Javascript using ESLint, Jest and Reassure
+      # Analyze the Javascript using ESLint, Flow, and Jest
       # Note: This is a job which is defined above and not part of the Orb
       - analyse_js:
           requires:
             - checkout_code
 
-      # # Build the Android app in debug mode
-      # - rn/android_build:
-      #     name: build_android_debug
-      #     project_path: "android"
-      #     build_type: debug
-      #     requires:
-      #       - analyse_js
+      # Build the Android app in debug mode
+      - rn/android_build:
+          name: build_android_debug
+          project_path: "android"
+          build_type: debug
+          requires:
+            - analyse_js
 
-      # Build the Android app in release mode
+      # Build and test the Android app in release mode
       # Note: We split these into seperate jobs because we can build the Android app on a Linux machine and preserve the expensive MacOS executor minutes for when it's required
       - rn/android_build:
           name: build_android_release
@@ -72,21 +58,13 @@ workflows:
           build_type: release
           requires:
             - analyse_js
+      # - rn/android_test:
+      #     detox_configuration: "android.emu.release"
+      #     requires:
+      #       - build_android_release
 
-      - android/deploy-to-play-store:
-          executor:
-            name: android/android-docker
-            tag: "2022.0.7"
-          base64-keystore: BASE64_KEYSTORE
-          release-key-alias: RELEASE_KEY_ALIAS
-          release-key-password: RELEASE_KEY_PASSWORD
-          release-keystore: ./keystore
-          release-store-password: RELEASE_STORE_PASSWORD
-          keystore-properties-working-directory: '.'
-          google-play-key: GOOGLE_PLAY_KEY
-          lane-name: deploy
-          fastlane-working-directory: '.'
-      # # Build the iOS app in release mode and do not run tests
+
+      # Build the iOS app in release mode and do not run tests
       # - rn/ios_build:
       #     name: build_ios_release
       #     project_path: ios/Example.xcodeproj
@@ -105,3 +83,17 @@ workflows:
       #     detox_configuration: "ios.sim.release"
       #     requires:
       #       - analyse_js
+
+      - android/deploy-to-play-store:
+          executor:
+            name: android/android-docker
+            tag: "2022.0.7"
+          base64-keystore: BASE64_KEYSTORE
+          release-key-alias: RELEASE_KEY_ALIAS
+          release-key-password: RELEASE_KEY_PASSWORD
+          release-keystore: ./keystore
+          release-store-password: RELEASE_STORE_PASSWORD
+          keystore-properties-working-directory: '.'
+          google-play-key: GOOGLE_PLAY_KEY
+          lane-name: deploy
+          fastlane-working-directory: '.'
