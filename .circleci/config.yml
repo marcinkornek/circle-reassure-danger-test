@@ -10,7 +10,9 @@ orbs:
 # Custom jobs which are not part of the Orb
 jobs:
   checkout_code:
-    executor: rn/linux_js
+    working_directory: ~/repo
+    docker:
+      - image: cimg/node:18.10.0
     steps:
       - checkout
       - persist_to_workspace:
