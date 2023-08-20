@@ -53,10 +53,12 @@ workflows:
       # Build and test the Android app in release mode
       # Note: We split these into seperate jobs because we can build the Android app on a Linux machine and preserve the expensive MacOS executor minutes for when it's required
       - rn/android_build:
+          executor:
+            name: rn/linux_js
+            node_version: "16"
           name: build_android_release
           project_path: "android"
           build_type: release
-          node_version: '16'
           requires:
             - analyse_js
       # - rn/android_test:
