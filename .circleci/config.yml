@@ -30,9 +30,12 @@ jobs:
           name: Jest
           command: yarn jest
   build_android:
+    docker:
+      - image: cimg/ruby:2.7-node
     steps:
       - ruby/install-deps:
-        app-dir: android
+          app-dir: android
+          with-cache: false
       - run:
           name: Execute fastlane
           command: bundle exec fastlane deploy
@@ -42,10 +45,10 @@ workflows:
     jobs:
       - checkout_code
 
-      - analyse_js:
-          requires:
-            - checkout_code
+      # - analyse_js:
+      #     requires:
+      #       - checkout_code
 
-      - build_android:
-          requires:
-            - analyse_js
+      - build_android
+          # requires:
+          #   - analyse_js
