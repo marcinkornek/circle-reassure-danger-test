@@ -33,9 +33,13 @@ jobs:
     docker:
       - image: cimg/ruby:2.7-node
     steps:
+      - checkout
       - ruby/install-deps:
           app-dir: android
           with-cache: false
+      - node/install-packages:
+          pkg-manager: yarn
+          cache-key: "yarn.lock"
       - run:
           name: Execute fastlane
           command: bundle exec fastlane deploy
