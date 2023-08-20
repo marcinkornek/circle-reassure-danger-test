@@ -32,9 +32,7 @@ jobs:
   build_android:
     executor: rn/linux_js
     steps:
-      - run:
-          name: Install fastlane
-          command: bundle install
+      - ruby/install-deps
       - run:
           name: Execute fastlane
           command: bundle exec fastlane deploy
