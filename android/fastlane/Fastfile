@@ -16,6 +16,10 @@
 default_platform(:android)
 
 platform :android do
+  before_all do
+    setup_circle_ci
+  end
+
   # desc "Increment version code"
   # lane :increment_vc do
   #   increment_version_code(

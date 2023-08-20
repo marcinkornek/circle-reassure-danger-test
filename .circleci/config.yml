@@ -6,6 +6,7 @@ orbs:
   rn: react-native-community/react-native@7.1.0
   android: circleci/android@2.3.0
   node: circleci/node@5.1.0
+  ruby: circleci/ruby@1.2.0
 
 # Custom jobs which are not part of the Orb
 jobs:
@@ -28,6 +29,14 @@ jobs:
       - run:
           name: Jest
           command: yarn jest
+  build_android:
+    steps:
+      - run:
+          name: Install fastlane
+          command: bundle install
+      - run:
+          name: Execute fastlane
+          command: bundle exec fastlane deploy
 
 workflows:
   test:
@@ -52,15 +61,12 @@ workflows:
 
       # Build and test the Android app in release mode
       # Note: We split these into seperate jobs because we can build the Android app on a Linux machine and preserve the expensive MacOS executor minutes for when it's required
-      - rn/android_build:
-          executor:
-            name: rn/linux_js
-            node_version: "16"
-          name: build_android_release
-          project_path: "android"
-          build_type: release
-          requires:
-            - analyse_js
+      # - rn/android_build:
+      #     name: build_android_release
+      #     project_path: "android"
+      #     build_type: release
+      #     requires:
+      #       - analyse_js
       # - rn/android_test:
       #     detox_configuration: "android.emu.release"
       #     requires:
@@ -86,20 +92,23 @@ workflows:
       #     detox_configuration: "ios.sim.release"
       #     requires:
       #       - analyse_js
-
-      - android/deploy-to-play-store:
-          executor:
-            name: android/android-docker
-            tag: "2022.0.7"
-          base64-keystore: BASE64_KEYSTORE
-          release-key-alias: RELEASE_KEY_ALIAS
-          release-key-password: RELEASE_KEY_PASSWORD
-          release-keystore: ./keystore
-          release-store-password: RELEASE_STORE_PASSWORD
-          keystore-properties-working-directory: '.'
-          google-play-key: GOOGLE_PLAY_KEY
-          lane-name: deploy
-          fastlane-working-directory: '.'
-
+      - build_android:
           requires:
-            - build_android_release
+            - analyse_js
+
+      # - android/deploy-to-play-store:
+      #     executor:
+      #       name: android/android-docker
+      #       tag: "2022.0.7"
+      #     base64-keystore: BASE64_KEYSTORE
+      #     release-key-alias: RELEASE_KEY_ALIAS
+      #     release-key-password: RELEASE_KEY_PASSWORD
+      #     release-keystore: ./keystore
+      #     release-store-password: RELEASE_STORE_PASSWORD
+      #     keystore-properties-working-directory: '.'
+      #     google-play-key: GOOGLE_PLAY_KEY
+      #     lane-name: deploy
+      #     fastlane-working-directory: '.'
+
+      #     requires:
+      #       - build_android_release
